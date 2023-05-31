@@ -20,13 +20,13 @@
 
   **Optional:**
 
-  `claimed=0|1` - Either 1 or 0 to get claimed/unclaimed books
-  `search=string` - A search term
-  `genre=int` - Filter results by genre id
+  - `claimed=0|1` - Either 1 or 0 to get claimed/unclaimed books
+  - `search=string` - A search term
+  - `genre=int` - Filter results by genre id
 
   **Example:**
 
-  `/api/books?search=Peach&claimed=1&genre=1
+  `/api/books?search=Peach&claimed=1&genre=1`
 
 * **Success Response:**
 
@@ -132,11 +132,76 @@
     * **Code:** 404 NOT FOUND <br />
       **Content:** `{"message": "Book with id 999 not found"}`
 
-### Claim/return a book
+### Claim book
 
 * **URL**
 
-  /books/{id}
+  /books/claim/{id}
+
+* **Method:**
+
+  `PUT`
+
+* **Body Data**
+
+  Must be sent as JSON with the correct headers
+
+  **Required:**
+
+    ```json
+    {
+      "email": "String",
+      "name": "string"
+    }
+    ```
+
+  **Optional:**
+
+    There are no optional body parameters
+
+  **Example:**
+
+  `/api/books/claim/1`
+
+* **Success Response:**
+
+    * **Code:** 200 OK <br />
+      **Content:** <br />
+
+  ```json
+  {"message": "Book 1 was claimed"}
+  ```
+
+* **Error Response:**
+
+    * **Code:** 404 NOT FOUND <br />
+      **Content:** `{"message": "Book 10 was not found"}`
+  
+    * **Code:** 400 BAD REQUEST <br />
+        **Content:** `{"message": "Book 10 is already claimed"}`
+
+    * **Code:** 422 UNPROCESSABLE CONTENT <br />
+      **Content:** 
+    ```json
+    {
+        "message": "The email field is required. (and 1 more error)",
+        "errors": {
+            "email": [
+                "The email field is required."
+            ],
+            "name": [
+                "The name field is required."
+            ]
+        }
+    }
+    ```
+
+
+### Return book
+
+* **URL**
+
+  /books/return/{id}
 
 * **Method:**
 
@@ -161,26 +226,18 @@
     ```json
     {
       "email": "String",
-      "name": "string"
     }
     ```
 
   **Optional:**
 
-    Note that the name field only needs to be sent when claiming a book. When returning a book only the email field to be sent
+  There are no optional body parameters
 
   **Example:**
 
-  `/api/books`
+  `/api/books/return/1`
 
 * **Success Response:**
-
-    * **Code:** 200 OK <br />
-      **Content:** <br />
-
-  ```json
-  {"message": "Book 1 was claimed"}
-  ```
 
     * **Code:** 200 OK <br />
       **Content:** <br />
@@ -193,9 +250,12 @@
 
     * **Code:** 404 NOT FOUND <br />
       **Content:** `{"message": "Book 10 was not found"}`
-
+  
+    * **Code:** 400 BAD REQUEST <br />
+      **Content:** `{"message": "Book 10 is not currently claimed"}`
+  
     * **Code:** 422 UNPROCESSABLE CONTENT <br />
-      **Content:** 
+      **Content:**
     ```json
     {
         "message": "The email field is required.",
@@ -206,7 +266,8 @@
         }
     }
     ```
-
+    * **Code:** 500 INTERNAL SERVER ERROR <br />
+      **Content:** `{"message": "Book 10 was not able to be returned"}`
 
 ### Add a new book
 
@@ -246,7 +307,8 @@
 
     ```json
     {
-      "blurb": "string"
+      "blurb": "string",
+      "image": "url"
     }
     ```
 
