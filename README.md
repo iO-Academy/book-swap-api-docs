@@ -20,7 +20,7 @@
 
   **Optional:**
 
-  - `claimed=0|1` - Either 1 or 0 to get claimed/unclaimed books
+  - `claimed=0|1` - Either 1 or 0 to get only claimed/unclaimed books
   - `search=string` - A search term
   - `genre=int` - Filter results by genre id
 
@@ -40,6 +40,7 @@
             "id": 2,
             "title": "foo",
             "author": "Test",
+            "image": "https://via.placeholder.com/640x480.png/00cc88?text=iure",
             "genre": {
                 "id": 1,
                 "name": "Action"
@@ -110,11 +111,12 @@
         "claimed_by_name": "Ash",
         "image": "https://example.com/image.jpg",
         "page_count": 1000,
+        "year": 1980,
         "genre": {
             "id": 1,
             "name": "Action"
         },
-        "review": [
+        "reviews": [
             {
                 "id": 3,
                 "name": "Ash",
@@ -308,7 +310,8 @@
     ```json
     {
       "blurb": "string",
-      "image": "url"
+      "image": "url",
+      "year": 1234
     }
     ```
 
@@ -525,3 +528,19 @@
 
     * **Code:** 500 INTERNAL SERVER ERROR <br />
       **Content:** `{"message": "Unexpected error occurred"}`
+
+## Example fetch request
+
+```js
+fetch('https://book-swap-api.dev.io-academy.uk/api/books', {
+    mode: 'cors',
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+}).then(res => res.json())
+    .then(data => {
+        console.log(data)
+    })
+
+```
