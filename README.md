@@ -255,6 +255,9 @@
   
     * **Code:** 400 BAD REQUEST <br />
       **Content:** `{"message": "Book 10 is not currently claimed"}`
+
+    * **Code:** 400 BAD REQUEST <br />
+      **Content:** `{"message": "Book 1 was not returned. test@test.com did not claim this book."}`
   
     * **Code:** 422 UNPROCESSABLE CONTENT <br />
       **Content:**
